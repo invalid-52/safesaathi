@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafeSaathi - Your Ultimate Safety Companion</title>
+    <title>SafeSaathi - India's Most Trusted Safety Companion</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -12,13 +12,34 @@
     <style>
         /* BASE STYLES & FONT */
         :root {
+            /* Dark Mode (Default) */
             --color-dark: #0a0a0a;
             --color-light-dark: #1e1e1e;
             --color-text: #f0f0f0;
             --color-secondary-text: #b0b0b0;
+            --color-border: rgba(255, 255, 255, 0.05);
+            --color-card-bg: var(--color-light-dark);
+
+            /* Accent Colors */
             --color-accent-pink: #ff416c;
             --color-accent-red: #ff4b2b;
             --gradient-primary: linear-gradient(135deg, var(--color-accent-pink), var(--color-accent-red));
+            --shadow-nav: rgba(10, 10, 10, 0.9);
+            --shadow-card: rgba(0, 0, 0, 0.5);
+            --shadow-glow: rgba(255, 65, 108, 0.2);
+        }
+
+        /* Light Mode Overrides */
+        .light-mode {
+            --color-dark: #f0f0f0;
+            --color-light-dark: #ffffff;
+            --color-text: #1e1e1e;
+            --color-secondary-text: #5e5e5e;
+            --color-border: rgba(0, 0, 0, 0.1);
+            --color-card-bg: #ffffff;
+            --shadow-nav: rgba(240, 240, 240, 0.9);
+            --shadow-card: rgba(0, 0, 0, 0.1);
+            --shadow-glow: rgba(255, 65, 108, 0.1);
         }
 
         * {
@@ -33,11 +54,13 @@
             color: var(--color-text);
             line-height: 1.6;
             overflow-x: hidden;
+            transition: background 0.5s, color 0.5s;
         }
 
         a {
             text-decoration: none;
             color: inherit;
+            cursor: pointer; /* Ensure links look clickable */
         }
 
         /* UTILITIES */
@@ -52,6 +75,34 @@
             transform: translateY(0);
         }
 
+        /* --- NEW: STAGGERED ANIMATIONS --- */
+        .stagger-child {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.17, 0.84, 0.44, 1);
+            transition-delay: var(--stagger-delay, 0s); /* CSS Variable for delay */
+        }
+        
+        .stagger-grid.visible .stagger-child {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* --- END: STAGGERED ANIMATIONS --- */
+
+
+        /* MODE TOGGLE */
+        .mode-toggle {
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--color-secondary-text);
+            transition: color 0.3s;
+            margin-left: 20px;
+        }
+
+        .mode-toggle:hover {
+            color: var(--color-accent-pink);
+        }
+
         /* NAVIGATION */
         nav {
             position: fixed;
@@ -61,10 +112,10 @@
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            background: rgba(10, 10, 10, 0.9);
+            background: var(--shadow-nav);
             backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            transition: padding 0.3s;
+            border-bottom: 1px solid var(--color-border);
+            transition: padding 0.3s, background 0.5s, border-bottom 0.5s;
         }
 
         .logo-container {
@@ -118,7 +169,8 @@
             padding: 10px 25px;
             border-radius: 30px;
             font-weight: 600;
-            color: var(--color-text);
+            color: #fff;
+            /* Always white text on the pink/red CTA */
             box-shadow: 0 8px 25px rgba(255, 65, 108, 0.3);
             transition: all 0.3s;
         }
@@ -126,7 +178,8 @@
         .nav-cta:hover {
             transform: translateY(-2px);
             box-shadow: 0 12px 35px rgba(255, 65, 108, 0.4);
-            color: var(--color-text);
+            /* FIX: Ensure text remains white on hover using !important for higher specificity */
+            color: #fff !important;
         }
 
         /* HERO SECTION */
@@ -137,7 +190,8 @@
             justify-content: space-between;
             padding: 150px 80px 80px;
             position: relative;
-            background: radial-gradient(circle at 10% 20%, rgba(255, 65, 108, 0.1), transparent 60%);
+            background: radial-gradient(circle at 10% 20%, var(--shadow-glow), transparent 60%);
+            transition: background 0.5s;
         }
 
         .hero-content {
@@ -158,17 +212,31 @@
                 transform: translateX(0);
             }
         }
+        
+        /* --- NEW KEYFRAME --- */
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
 
         .hero-badge {
             display: inline-block;
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--color-border);
             padding: 8px 20px;
             border-radius: 30px;
             font-size: 13px;
             margin-bottom: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--color-border);
             color: var(--color-accent-pink);
             font-weight: 600;
+            transition: background 0.5s, border 0.5s;
         }
 
         .hero h1 {
@@ -219,17 +287,17 @@
         .btn-secondary {
             padding: 16px 40px;
             font-size: 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: var(--color-border);
+            border: 1px solid var(--color-border);
             border-radius: 50px;
             color: var(--color-text);
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s, background 0.5s, border 0.5s;
             font-weight: 600;
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--color-border);
             border-color: var(--color-accent-pink);
         }
 
@@ -247,7 +315,7 @@
 
         .stat-item p {
             font-size: 14px;
-            color: #808080;
+            color: var(--color-secondary-text);
         }
 
         /* MOCKUP */
@@ -257,42 +325,52 @@
             justify-content: center;
             align-items: center;
             position: relative;
+            animation: slideInRight 1s ease-out; /* --- NEWLY ADDED --- */
         }
 
         .phone-container {
             position: relative;
-            animation: float 5s ease-in-out infinite;
+             /* --- MODIFIED --- */
+            animation: uniqueFloat 6s ease-in-out infinite;
             transform: rotate(5deg);
         }
 
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0) rotate(5deg);
+        /* --- MODIFIED: Replaced 'float' with 'uniqueFloat' --- */
+        @keyframes uniqueFloat {
+            0% {
+                transform: translateY(0) translateX(0) rotate(5deg);
             }
-
+            25% {
+                transform: translateY(-10px) translateX(5px) rotate(0deg);
+            }
             50% {
-                transform: translateY(-20px) rotate(-5deg);
+                transform: translateY(-20px) translateX(0) rotate(-5deg);
+            }
+            75% {
+                transform: translateY(-10px) translateX(-5px) rotate(0deg);
+            }
+            100% {
+                transform: translateY(0) translateX(0) rotate(5deg);
             }
         }
 
         .phone-mockup {
             width: 300px;
             height: 600px;
-            background: var(--color-light-dark);
+            background: var(--color-card-bg);
             border-radius: 40px;
             padding: 15px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9);
-            border: 3px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 30px 80px var(--shadow-card);
+            border: 3px solid var(--color-border);
             position: relative;
             z-index: 2;
+            transition: background 0.5s, border 0.5s, box-shadow 0.5s;
         }
 
         .phone-screen {
             width: 100%;
             height: 100%;
-            background: #111;
+            background: var(--color-dark);
             border-radius: 30px;
             padding: 25px 20px;
             position: relative;
@@ -300,6 +378,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            transition: background 0.5s;
+        }
+
+        .light-mode .phone-screen {
+            background: #ededed;
         }
 
         .app-header {
@@ -384,7 +467,8 @@
         .status-item {
             text-align: center;
             font-size: 11px;
-            color: #808080;
+            color: var(--color-secondary-text);
+            transition: color 0.5s;
         }
 
         .status-icon {
@@ -397,7 +481,7 @@
             position: absolute;
             width: 350px;
             height: 350px;
-            background: radial-gradient(circle, rgba(255, 65, 108, 0.2), transparent 70%);
+            background: radial-gradient(circle, var(--shadow-glow), transparent 70%);
             border-radius: 50%;
             filter: blur(50px);
             top: 50%;
@@ -405,6 +489,7 @@
             transform: translate(-50%, -50%);
             animation: glow 6s ease-in-out infinite;
             z-index: 1;
+            transition: background 0.5s;
         }
 
         @keyframes glow {
@@ -424,9 +509,10 @@
         /* TRUST BANNER */
         .trust-banner {
             padding: 40px 80px;
-            background: var(--color-light-dark);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: var(--color-card-bg);
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+            transition: background 0.5s, border 0.5s;
         }
 
         .trust-content {
@@ -437,11 +523,12 @@
 
         .trust-title {
             font-size: 14px;
-            color: #808080;
+            color: var(--color-secondary-text);
             margin-bottom: 25px;
             letter-spacing: 2px;
             text-transform: uppercase;
             font-weight: 700;
+            transition: color 0.5s;
         }
 
         .trust-logos {
@@ -454,20 +541,23 @@
 
         .trust-logo {
             font-size: 18px;
-            color: rgba(255, 255, 255, 0.4);
+            color: var(--color-secondary-text);
+            opacity: 0.4;
             font-weight: 600;
             text-transform: uppercase;
-            transition: color 0.3s;
+            transition: color 0.3s, opacity 0.5s;
         }
 
         .trust-logo:hover {
             color: var(--color-text);
+            opacity: 1;
         }
 
 
         /* SECTIONS */
         section {
             padding: 120px 80px;
+            transition: background 0.5s;
         }
 
         .section-header {
@@ -513,36 +603,21 @@
         }
 
         .feature-card {
-            background: var(--color-light-dark);
+            background: var(--color-card-bg);
             padding: 40px;
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--color-border);
             transition: all 0.4s;
             position: relative;
             overflow: hidden;
         }
 
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255, 65, 108, 0.15), transparent 70%);
-            opacity: 0;
-            transition: opacity 0.4s;
-            z-index: 0;
-        }
+        /* --- MODIFICATION: Removed .feature-card::before and .feature-card:hover::before --- */
 
         .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border-color: rgba(255, 65, 108, 0.3);
-        }
-
-        .feature-card:hover::before {
-            opacity: 1;
+            /* transform: translateY(-5px); <-- REMOVED */
+            /* box-shadow: 0 10px 30px var(--shadow-card); <-- REMOVED */
+            border-color: var(--color-accent-pink);
         }
 
         .feature-icon {
@@ -553,22 +628,32 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             width: fit-content;
+            position: relative; 
+            z-index: 1;        
         }
+         
+         /* --- MODIFICATION: Removed .feature-icon i and .feature-card:hover .feature-icon i --- */
+
 
         .feature-card h3 {
             font-size: 20px;
             margin-bottom: 10px;
             font-weight: 800;
+            position: relative; 
+            z-index: 1;        
         }
 
         .feature-card p {
-            color: #909090;
+            color: var(--color-secondary-text);
             font-size: 15px;
+            transition: color 0.5s;
+            position: relative; 
+            z-index: 1;        
         }
 
         /* HOW IT WORKS */
         .how-it-works {
-            background: var(--color-light-dark);
+            background: var(--color-card-bg);
         }
 
         .steps-container {
@@ -607,8 +692,9 @@
         }
 
         .step-card p {
-            color: #909090;
+            color: var(--color-secondary-text);
             font-size: 14px;
+            transition: color 0.5s;
         }
 
         /* TESTIMONIALS */
@@ -621,16 +707,16 @@
         }
 
         .testimonial-card {
-            background: var(--color-light-dark);
-            padding: 35px;
+            background: var(--color-card-bg);
+            padding: 30px;
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--color-border);
             transition: all 0.3s;
         }
-        
+
         .testimonial-card:hover {
             transform: scale(1.02);
-            border-color: rgba(255, 65, 108, 0.3);
+            border-color: var(--color-accent-pink);
         }
 
         .testimonial-rating {
@@ -642,9 +728,10 @@
         .testimonial-text {
             color: var(--color-secondary-text);
             line-height: 1.7;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             font-size: 15px;
             font-style: italic;
+            transition: color 0.5s;
         }
 
         .testimonial-author {
@@ -674,15 +761,22 @@
 
         .author-info p {
             font-size: 12px;
-            color: #808080;
+            color: var(--color-secondary-text);
+            transition: color 0.5s;
+        }
+
+        /* NEW: Styles for hidden reviews and button */
+        .hidden-review {
+            display: none;
+        }
+
+        .read-more-container {
+            text-align: center;
+            margin-top: 40px;
         }
 
 
-        /* VERIFICATION SECTION */
-        .verification {
-            background: var(--color-dark);
-        }
-
+        /* VERIFICATION CONTAINER (Inside Modal) */
         .verification-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -703,6 +797,7 @@
             font-size: 16px;
             color: var(--color-secondary-text);
             margin-bottom: 30px;
+            transition: color 0.5s;
         }
 
         .security-features {
@@ -737,10 +832,11 @@
         }
 
         .verification-form {
-            background: var(--color-light-dark);
+            background: var(--color-card-bg);
             padding: 40px;
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--color-border);
+            transition: background 0.5s, border 0.5s;
         }
 
         .form-group {
@@ -753,14 +849,15 @@
             color: var(--color-secondary-text);
             font-weight: 500;
             font-size: 13px;
+            transition: color 0.5s;
         }
 
         .form-group input,
         .form-group select {
             width: 100%;
             padding: 14px 18px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--color-border);
+            border: 1px solid var(--color-border);
             border-radius: 10px;
             color: var(--color-text);
             font-size: 15px;
@@ -768,11 +865,26 @@
             font-family: inherit;
         }
 
+        .form-group select {
+            background: var(--color-border);
+            color: var(--color-text);
+        }
+
+        .form-group select option {
+            background-color: var(--color-card-bg);
+            color: var(--color-text);
+        }
+
+        .light-mode .form-group select option {
+             background-color: #f0f0f0;
+             color: #1e1e1e;
+        }
+
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
             border-color: var(--color-accent-pink);
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 65, 108, 0.1);
         }
 
         .verify-button {
@@ -811,7 +923,7 @@
         .download-cta {
             padding: 100px 80px;
             text-align: center;
-            background: var(--color-light-dark);
+            background: var(--color-card-bg);
         }
 
         .cta-content {
@@ -833,6 +945,7 @@
             font-size: 18px;
             color: var(--color-secondary-text);
             margin-bottom: 30px;
+            transition: color 0.5s;
         }
 
         .download-buttons {
@@ -846,8 +959,8 @@
             align-items: center;
             gap: 12px;
             padding: 14px 30px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--color-border);
+            border: 1px solid var(--color-border);
             border-radius: 50px;
             color: var(--color-text);
             text-decoration: none;
@@ -856,9 +969,10 @@
         }
 
         .download-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 65, 108, 0.2);
             transform: translateY(-2px);
             border-color: var(--color-accent-pink);
+            color: var(--color-text);
         }
 
         .download-icon i {
@@ -869,8 +983,8 @@
         /* CHATBOT STYLES */
         .chatbot-button {
             position: fixed;
-            bottom: 25px;
-            right: 25px;
+            bottom: 30px;
+            right: 30px;
             width: 60px;
             height: 60px;
             background: var(--gradient-primary);
@@ -878,130 +992,171 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            color: white;
+            font-size: 24px;
             cursor: pointer;
             box-shadow: 0 10px 30px rgba(255, 65, 108, 0.5);
-            z-index: 999;
             transition: all 0.3s;
+            z-index: 1001;
+            transition: opacity 0.3s, transform 0.3s;
         }
 
-        .chatbot-button i {
-            font-size: 30px;
-            color: white;
+        .chatbot-button.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .chatbot-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 65, 108, 0.7);
         }
 
         .chatbot-window {
             position: fixed;
-            bottom: 100px;
-            right: 25px;
-            width: 380px;
-            height: 500px;
-            background: var(--color-light-dark);
+            bottom: 30px;
+            right: 30px;
+            width: 350px;
+            height: 450px;
+            background: var(--color-card-bg);
             border-radius: 15px;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: none;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: flex;
             flex-direction: column;
-            z-index: 999;
-            animation: slideUp 0.4s ease-out;
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+            transition: background 0.5s, border 0.5s,
+                        opacity 0.4s ease-out, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            visibility: hidden;
+            opacity: 0;
+            transform: scale(0);
+            transform-origin: bottom right;
+        }
+
+        .chatbot-window.open-chat {
+            visibility: visible;
+            opacity: 1;
+            transform: scale(1);
         }
 
         .chatbot-header {
-            padding: 15px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            background: var(--color-light-dark);
+            color: var(--color-text);
+            font-weight: 700;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: var(--color-dark);
-            border-radius: 15px 15px 0 0;
+            border-bottom: 1px solid var(--color-border);
+            transition: background 0.5s;
         }
 
         .chat-messages {
-            flex: 1;
-            padding: 20px;
+            flex-grow: 1;
+            padding: 15px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 10px;
+            background: var(--color-card-bg);
+            transition: background 0.5s;
         }
 
         .message {
-            padding: 12px 18px;
-            border-radius: 12px;
-            max-width: 75%;
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            line-height: 1.4;
             font-size: 14px;
-            animation: fadeIn 0.3s ease-out;
         }
 
         .bot-message {
-            background: rgba(255, 255, 255, 0.08);
+            background: var(--color-border);
+            color: var(--color-text);
             align-self: flex-start;
-            border-bottom-left-radius: 4px;
+            border-bottom-left-radius: 5px;
+            transition: background 0.5s;
         }
 
         .user-message {
-            background: var(--gradient-primary);
+            background: var(--color-accent-pink);
+            color: white;
             align-self: flex-end;
-            border-bottom-right-radius: 4px;
+            border-bottom-right-radius: 5px;
         }
 
         .chat-input-container {
-            padding: 10px 20px 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 10px;
             display: flex;
-            gap: 10px;
+            border-top: 1px solid var(--color-border);
+            background: var(--color-card-bg);
+            transition: background 0.5s;
         }
 
         .chat-input {
-            flex: 1;
-            padding: 12px 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid var(--color-border);
+            border-radius: 20px;
+            margin-right: 10px;
+            background: var(--color-border);
             color: var(--color-text);
-            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--color-accent-pink);
+            background: var(--color-border);
         }
 
         .send-button {
-            padding: 12px 15px;
             background: var(--gradient-primary);
+            color: white;
             border: none;
-            border-radius: 8px;
-            color: var(--color-text);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
             cursor: pointer;
             transition: all 0.3s;
-            font-weight: 700;
+        }
+
+        .send-button:hover {
+            opacity: 0.9;
         }
 
         .quick-actions {
             display: flex;
-            gap: 8px;
             flex-wrap: wrap;
-            margin-top: 5px;
+            gap: 8px;
+            margin-top: 10px;
+            padding-bottom: 10px;
         }
 
         .quick-action {
-            padding: 6px 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            font-size: 11px;
-            color: var(--color-secondary-text);
+            padding: 8px 12px;
+            background: rgba(255, 65, 108, 0.1);
+            color: var(--color-accent-pink);
+            border: 1px solid rgba(255, 65, 108, 0.2);
+            border-radius: 20px;
+            font-size: 12px;
             cursor: pointer;
+            font-weight: 600;
             transition: all 0.3s;
-            white-space: nowrap;
         }
 
         .quick-action:hover {
             background: rgba(255, 65, 108, 0.2);
-            border-color: var(--color-accent-pink);
-            color: var(--color-text);
         }
+
 
         /* FOOTER */
         footer {
             padding: 60px 80px 30px;
             background: var(--color-dark);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid var(--color-border);
+            transition: background 0.5s, border-top 0.5s;
         }
 
         .footer-content {
@@ -1026,7 +1181,7 @@
         }
 
         .footer-brand p {
-            color: #808080;
+            color: var(--color-secondary-text);
             font-size: 14px;
             margin-bottom: 20px;
         }
@@ -1050,8 +1205,8 @@
         }
 
         .social-link:hover {
-            background: var(--color-accent-pink);
-            color: white;
+            color: var(--color-accent-pink);
+            background: rgba(255, 65, 108, 0.1);
         }
 
         .footer-column h4 {
@@ -1062,16 +1217,17 @@
 
         .footer-column ul {
             list-style: none;
-        }
-
-        .footer-column li {
-            margin-bottom: 8px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .footer-column a {
-            color: #808080;
+            color: var(--color-secondary-text);
             font-size: 13px;
             transition: color 0.3s;
+            cursor: pointer;
         }
 
         .footer-column a:hover {
@@ -1080,7 +1236,7 @@
 
         .footer-bottom {
             padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid var(--color-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -1089,7 +1245,7 @@
         }
 
         .footer-bottom p {
-            color: #606060;
+            color: var(--color-secondary-text);
             font-size: 13px;
         }
 
@@ -1103,23 +1259,150 @@
             font-size: 12px;
         }
 
+        /* MODAL STYLES (Registration and Policy) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .modal-overlay.open {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--color-dark);
+            border-radius: 25px;
+            padding: 30px;
+            width: 90%;
+            max-width: 900px; /* Max width for registration */
+            position: relative;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid var(--color-border);
+            max-height: 90vh; /* Prevent modal from being too tall */
+            display: flex;
+            flex-direction: column;
+        }
+        /* Specific styles for policy modal */
+         #policyModal .modal-content {
+            max-width: 700px; /* Smaller max width for text content */
+         }
+
+        .modal-overlay.open .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--color-secondary-text);
+            transition: color 0.3s;
+            z-index: 10; /* Ensure close button is above content */
+        }
+
+        .modal-close:hover {
+            color: var(--color-accent-pink);
+        }
+
+        /* Modal Header (for Policy Modal) */
+        .modal-header {
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--color-border);
+            margin-bottom: 20px;
+            flex-shrink: 0; /* Prevent header from shrinking */
+        }
+        .modal-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-text);
+        }
+
+        /* Modal Body (for Policy Modal) */
+        .modal-body {
+            overflow-y: auto; /* Make content scrollable */
+            flex-grow: 1; /* Allow body to take remaining space */
+            padding-right: 15px; /* Add padding for scrollbar */
+        }
+
+        .modal-body p {
+            color: var(--color-secondary-text);
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+         .modal-body h3 {
+             color: var(--color-text);
+             font-size: 18px;
+             margin-top: 25px;
+             margin-bottom: 10px;
+         }
+         .modal-body ul {
+            list-style-position: inside;
+            margin-left: 10px;
+            margin-bottom: 15px;
+         }
+          .modal-body li {
+            margin-bottom: 8px;
+            color: var(--color-secondary-text);
+          }
+
+
+        /* Adjusting verification container for modal */
+        #registrationModal .verification-container { /* Target only registration modal */
+            gap: 40px;
+            padding: 0;
+            margin: 0;
+            overflow-y: auto; /* Make registration scrollable if needed */
+        }
+
+        #registrationModal .verification-content h2 { /* Target only registration modal */
+            font-size: 36px;
+        }
+
+        #registrationModal .verification-content p { /* Target only registration modal */
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+
         /* RESPONSIVENESS */
         @media (max-width: 1200px) {
+            nav,
+            .hero,
+            .trust-banner,
+            section,
+            footer {
+                padding-left: 40px;
+                padding-right: 40px;
+            }
+
+            .hero h1 {
+                font-size: 60px;
+            }
+
             .features-grid,
             .testimonials-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .steps-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .verification-container {
+            .verification-container { /* Applies inside modal too */
                 grid-template-columns: 1fr;
-            }
-
-            .footer-content {
-                grid-template-columns: repeat(3, 1fr);
+                gap: 50px;
             }
         }
 
@@ -1134,78 +1417,56 @@
 
             .hero {
                 flex-direction: column;
-                padding: 100px 20px 50px;
+                padding-top: 100px;
                 text-align: center;
             }
 
             .hero-content {
-                order: 2; /* Move content below the image on mobile */
+                order: 2;
+                max-width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+                line-height: 1.3;
             }
 
             .hero-image {
                 order: 1;
                 margin-bottom: 50px;
             }
-            
-            .phone-container {
-                transform: rotate(0deg) !important;
-                animation: float-mobile 4s ease-in-out infinite;
-            }
-            
-            @keyframes float-mobile {
-
-                0%,
-                100% {
-                    transform: translateY(0);
-                }
-
-                50% {
-                    transform: translateY(-15px);
-                }
-            }
-
-            .hero h1 {
-                font-size: 42px;
-            }
 
             .hero-buttons {
                 flex-direction: column;
+                gap: 10px;
             }
 
             .stats {
-                flex-direction: column;
-                gap: 30px;
-            }
-            
-            section {
-                padding: 80px 20px;
+                justify-content: center;
+                gap: 20px;
             }
 
             .features-grid,
-            .steps-container,
-            .testimonials-grid {
+            .testimonials-grid,
+            .steps-container {
                 grid-template-columns: 1fr;
             }
 
             .section-title {
-                font-size: 36px;
-            }
-
-            .verification-form {
-                padding: 30px 20px;
-            }
-
-            .cta-content h2 {
-                font-size: 36px;
-            }
-
-            .download-buttons {
-                flex-direction: column;
+                font-size: 32px;
             }
 
             .footer-content {
                 grid-template-columns: 1fr;
-                gap: 30px;
+                text-align: center;
+            }
+
+            .footer-brand {
+                max-width: 100%;
+            }
+
+            .social-links {
+                justify-content: center;
             }
 
             .footer-bottom {
@@ -1213,11 +1474,34 @@
                 text-align: center;
                 gap: 20px;
             }
-            
-            .chatbot-window {
-                width: calc(100% - 50px);
-                right: 25px;
+
+            .phone-mockup {
+                width: 250px;
+                height: 500px;
+                padding: 10px;
             }
+
+            .phone-screen {
+                border-radius: 25px;
+            }
+
+            .sos-circle {
+                width: 150px;
+                height: 150px;
+            }
+
+            .chatbot-window {
+                width: 90%;
+                left: 5%;
+                right: 5%;
+                bottom: 100px;
+            }
+            .modal-content { /* Adjust modal padding for smaller screens */
+                 padding: 20px;
+             }
+             .modal-header h2 {
+                 font-size: 20px;
+             }
         }
     </style>
 </head>
@@ -1233,7 +1517,11 @@
             <li><a href="#features">Features</a></li>
             <li><a href="#how-it-works">How It Works</a></li>
             <li><a href="#testimonials">Testimonials</a></li>
-            <li><a href="#verify" class="nav-cta">Register Now</a></li>
+            <li>
+                <i id="modeToggle" class="fa-solid fa-sun mode-toggle" onclick="toggleMode()"
+                    title="Toggle Light/Dark Mode"></i>
+            </li>
+            <li><a href="#" class="nav-cta" onclick="openModal(); return false;">Register Now</a></li>
         </ul>
     </nav>
 
@@ -1241,28 +1529,26 @@
         <div class="hero-content">
             <div class="hero-badge">🛡 Trusted by 50,000+ Users Across India</div>
             <h1>Your Safety, <span>Always Within Reach</span></h1>
-            <p>India's most advanced emergency SOS application designed specifically for **women**, **senior citizens**, and anyone needing help. One
+            <p>India's most advanced emergency SOS application designed specifically for women and senior citizens. One
                 tap connects you to your trusted network and emergency responders instantly.</p>
             <div class="hero-buttons">
-                <button class="btn-primary"
-                    onclick="document.getElementById('verify').scrollIntoView({behavior: 'smooth'})">Start Free
-                    Trial</button>
+                 <button class="btn-primary" onclick="openModal()">Join Us</button>
                 <button class="btn-secondary"
                     onclick="document.getElementById('how-it-works').scrollIntoView({behavior: 'smooth'})">See How It
                     Works</button>
             </div>
             <div class="stats">
                 <div class="stat-item">
-                    <h3>50K+</h3>
+                    <h3 data-target="50000" data-suffix="+">0</h3>
                     <p>Active Users</p>
                 </div>
                 <div class="stat-item">
-                    <h3>15K+</h3>
+                    <h3 data-target="15000" data-suffix="+">0</h3>
                     <p>Lives Protected</p>
                 </div>
                 <div class="stat-item">
-                    <h3>&lt;3s</h3>
-                    <p>Avg. Response Time</p>
+                    <h3 data-target="3" data-prefix="&lt;" data-suffix="s">0</h3>
+                    <p>Response Time</p>
                 </div>
             </div>
         </div>
@@ -1278,7 +1564,9 @@
                         <div class="sos-circle">
                             SOS
                         </div>
-                        <p style="text-align: center; color: #f0f0f0; font-weight: 700; margin-top: 20px;">PRESS FOR 3 SECONDS</p>
+                        <p
+                            style="text-align: center; color: var(--color-text); font-weight: 700; margin-top: 20px; transition: color 0.5s;">
+                            PRESS FOR 3 SECONDS</p>
                         <div class="status-bar">
                             <div class="status-item">
                                 <div class="status-icon"><i class="fa-solid fa-location-dot"></i></div>
@@ -1311,77 +1599,92 @@
         </div>
     </section>
 
-    <section class="features fade-in" id="features">
+    <section class="features" id="features">
         <div class="section-header">
             <div class="section-badge">POWERFUL FEATURES</div>
             <h2 class="section-title">Everything You Need to Stay Safe</h2>
             <p class="section-description">Advanced safety technology meets simplicity. Our comprehensive features
                 ensure you're protected 24/7, wherever you are.</p>
         </div>
-        <div class="features-grid">
-            <div class="feature-card">
+        <div class="features-grid stagger-grid">
+            <div class="feature-card stagger-child">
                 <div class="feature-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
                 <h3>Instant Emergency Alert</h3>
                 <p>One-tap SOS sends immediate alerts to your emergency contacts with your exact location, triggering a
                     rapid response chain.</p>
             </div>
-            <div class="feature-card">
+            <div class="feature-card stagger-child">
                 <div class="feature-icon"><i class="fa-solid fa-location-crosshairs"></i></div>
                 <h3>Live Location Sharing</h3>
                 <p>Real-time GPS tracking allows your trusted contacts to monitor your location continuously during
                     emergencies.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            <div class="feature-card stagger-child">
+                <div class="feature-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
                 <h3>Smart Watch Integration</h3>
                 <p>Seamlessly connects with smartwatches for discreet emergency activation without reaching for your
                     phone.</p>
             </div>
-            <div class="feature-card">
+            <div class="feature-card stagger-child">
                 <div class="feature-icon"><i class="fa-solid fa-video"></i></div>
                 <h3>Auto Video Recording</h3>
                 <p>Automatically starts recording video evidence when SOS is activated, securely uploading to cloud
                     storage.</p>
             </div>
-            <div class="feature-card">
+            <div class="feature-card stagger-child">
                 <div class="feature-icon"><i class="fa-solid fa-bullhorn"></i></div>
                 <h3>Loud Siren Alarm</h3>
                 <p>Activates a piercing 120dB siren to attract attention and deter potential threats in your vicinity.
                 </p>
             </div>
-            <div class="feature-card">
+            <div class="feature-card stagger-child">
                 <div class="feature-icon"><i class="fa-solid fa-building-shield"></i></div>
                 <h3>Police Integration</h3>
                 <p>Direct connectivity with local police stations ensures law enforcement is notified immediately during
                     crises.</p>
             </div>
+            <div class="feature-card stagger-child">
+                <div class="feature-icon"><i class="fa-solid fa-users"></i></div>
+                <h3>Community Alert Network</h3>
+                <p>Alerts nearby SafeSaathi users who can provide immediate assistance while help is on the way.</p>
+            </div>
+            <div class="feature-card stagger-child">
+                <div class="feature-icon"><i class="fa-solid fa-battery-quarter"></i></div>
+                <h3>Low Power Mode</h3>
+                <p>Optimized battery usage ensures the app works even when your phone battery is critically low.</p>
+            </div>
+             <div class="feature-card stagger-child">
+                <div class="feature-icon"><i class="fa-solid fa-map-marked-alt"></i></div>
+                <h3>Safe Zones / Geofencing</h3>
+                <p>Define safe areas (like home or office) and automatically notify contacts when you enter or leave these zones.</p>
+            </div>
         </div>
     </section>
 
-    <section class="how-it-works fade-in" id="how-it-works">
+    <section class="how-it-works" id="how-it-works">
         <div class="section-header">
             <div class="section-badge">SIMPLE & EFFECTIVE</div>
             <h2 class="section-title">How SafeSaathi Works</h2>
             <p class="section-description">Getting started is easy. Follow these simple steps to activate your safety
                 shield.</p>
         </div>
-        <div class="steps-container">
-            <div class="step-card">
+        <div class="steps-container stagger-grid">
+            <div class="step-card stagger-child">
                 <div class="step-number">1</div>
                 <h3>Download & Register</h3>
                 <p>Install SafeSaathi from Play Store or App Store. Complete Aadhar verification for secure access.</p>
             </div>
-            <div class="step-card">
+            <div class="step-card stagger-child">
                 <div class="step-number">2</div>
                 <h3>Add Trusted Contacts</h3>
                 <p>Build your safety network by adding family, friends, and emergency services to your contact list.</p>
             </div>
-            <div class="step-card">
+            <div class="step-card stagger-child">
                 <div class="step-number">3</div>
                 <h3>Customize Settings</h3>
                 <p>Configure alert preferences, siren volume, auto-recording options, and more to suit your needs.</p>
             </div>
-            <div class="step-card">
+            <div class="step-card stagger-child">
                 <div class="step-number">4</div>
                 <h3>Stay Protected</h3>
                 <p>You're all set! Tap the SOS button anytime you need help, and your network will be alerted instantly.
@@ -1389,15 +1692,15 @@
             </div>
         </div>
     </section>
-    
-    <section class="testimonials fade-in" id="testimonials">
+
+    <section class="testimonials" id="testimonials">
         <div class="section-header">
             <div class="section-badge">USER STORIES</div>
             <h2 class="section-title">Real People, Real Safety Stories</h2>
             <p class="section-description">Hear from users whose lives have been positively impacted by SafeSaathi.</p>
         </div>
-        <div class="testimonials-grid">
-            <div class="testimonial-card">
+        <div class="testimonials-grid stagger-grid">
+            <div class="testimonial-card stagger-child">
                 <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
                 <p class="testimonial-text">"SafeSaathi gave me the confidence to travel alone. The instant alert
                     feature helped me during a scary situation, and my family reached me within minutes. Truly a
@@ -1410,7 +1713,7 @@
                     </div>
                 </div>
             </div>
-            <div class="testimonial-card">
+            <div class="testimonial-card stagger-child">
                 <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
                 <p class="testimonial-text">"As a senior citizen living alone, this app gives me peace of mind. My
                     children can track my location, and I feel secure knowing help is just one tap away. Excellent
@@ -1423,7 +1726,7 @@
                     </div>
                 </div>
             </div>
-            <div class="testimonial-card">
+            <div class="testimonial-card stagger-child">
                 <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
                 <p class="testimonial-text">"The auto video recording saved me from a potential harassment case. The
                     evidence was immediately shared with police. Thank you SafeSaathi for standing up for women's
@@ -1436,85 +1739,50 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <section class="verification fade-in" id="verify">
-        <div class="verification-container">
-            <div class="verification-content">
-                <h2>Join the SafeSaathi Community</h2>
-                <p>Register with your **Aadhar** to verify your identity and unlock all premium safety features. Your
-                    information is encrypted and secure.</p>
-                <div class="security-features">
-                    <div class="security-item">
-                        <div class="security-icon"><i class="fa-solid fa-lock"></i></div>
-                        <div>
-                            <strong>Bank-Grade Encryption</strong>
-                            <p style="color: #808080; font-size: 14px; margin-top: 3px;">Your data is protected with
-                                AES-256 encryption</p>
-                        </div>
-                    </div>
-                    <div class="security-item">
-                        <div class="security-icon"><i class="fa-solid fa-circle-check"></i></div>
-                        <div>
-                            <strong>Aadhar Verified</strong>
-                            <p style="color: #808080; font-size: 14px; margin-top: 3px;">UIDAI compliant verification
-                                process</p>
-                        </div>
-                    </div>
-                    <div class="security-item">
-                        <div class="security-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                        <div>
-                            <strong>Privacy Protected</strong>
-                            <p style="color: #808080; font-size: 14px; margin-top: 3px;">We never share your data with
-                                third parties</p>
-                        </div>
+            <div class="testimonial-card hidden-review stagger-child">
+                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"The smartwatch integration is a game-changer. I can send an alert
+                    discreetly without even touching my phone. Gives me and my parents so much peace of mind."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">R</div>
+                    <div class="author-info">
+                        <h4>Rohan Gupta</h4>
+                        <p>College Student, Pune</p>
                     </div>
                 </div>
             </div>
-            <div class="verification-form">
-                <form id="aadharForm">
-                    <div class="form-group">
-                        <label for="name">Full Name (as per Aadhar)</label>
-                        <input type="text" id="name" placeholder="Enter your full name" required>
+            <div class="testimonial-card hidden-review stagger-child">
+                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"I use this app for my elderly mother. The live location sharing is very
+                    accurate, and I feel much calmer knowing I can check on her. The setup was also very simple."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">S</div>
+                    <div class="author-info">
+                        <h4>Sunita Rao</h4>
+                        <p>Homemaker, Chennai</p>
                     </div>
-                    <div class="form-group">
-                        <label for="aadhar">Aadhar Number</label>
-                        <input type="text" id="aadhar" placeholder="XXXX XXXX XXXX" maxlength="14" required>
+                </div>
+            </div>
+            <div class="testimonial-card hidden-review stagger-child">
+                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"The police integration feature is what sold me. Knowing that law
+                    enforcement is contacted directly is a huge plus. This is a must-have app for everyone in the city."
+                </p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">V</div>
+                    <div class="author-info">
+                        <h4>Vikram Singh</h4>
+                        <p>IT Professional, Hyderabad</p>
                     </div>
-                    <div class="form-group">
-                        <label for="phone">Mobile Number</label>
-                        <input type="tel" id="phone" placeholder="XXXXX XXXXX" maxlength="10" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="gender">Gender</label>
-                        <select id="gender" required>
-                            <option value="">Select Gender</option>
-                            <option value="female">Female</option>
-                            <option value="male">Male</option>
-                            <option value="other">Other</option>
-                            <option value="prefer-not">Prefer not to say</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="age">Age Group</label>
-                        <select id="age" required>
-                            <option value="">Select Age Group</option>
-                            <option value="18-25">18-25 years</option>
-                            <option value="26-40">26-40 years</option>
-                            <option value="41-60">41-60 years</option>
-                            <option value="60+">60+ years (Senior Citizen)</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="verify-button">Verify & Register</button>
-                    <div class="success-message" id="successMessage">
-                        <strong>✓ Registration Successful!</strong>
-                        <p style="margin-top: 10px; color: #b0b0b0;">Welcome to SafeSaathi. Download the app to activate
-                            your account.</p>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
+
+        <div class="read-more-container fade-in">
+            <button id="toggleReviewsBtn" class="btn-secondary">View More Reviews</button>
+        </div>
+
     </section>
 
     <section class="download-cta fade-in">
@@ -1525,14 +1793,14 @@
                 <a href="#" class="download-btn">
                     <div class="download-icon"><i class="fa-brands fa-google-play"></i></div>
                     <div>
-                        <div style="font-size: 11px; color: #808080;">Get it on the</div>
+                        <div style="font-size: 11px; color: var(--color-secondary-text);">Get it on the</div>
                         <div>Play Store</div>
                     </div>
                 </a>
                 <a href="#" class="download-btn">
                     <div class="download-icon"><i class="fa-brands fa-apple"></i></div>
                     <div>
-                        <div style="font-size: 11px; color: #808080;">Download on the</div>
+                        <div style="font-size: 11px; color: var(--color-secondary-text);">Download on the</div>
                         <div>App Store</div>
                     </div>
                 </a>
@@ -1558,35 +1826,35 @@
                 <ul>
                     <li><a href="#features">Features</a></li>
                     <li><a href="#how-it-works">How It Works</a></li>
-                    <li><a href="#">Pricing</a></li>
-                    <li><a href="#">FAQ</a></li>
+                    <li><a onclick="openPolicyModal('Pricing')">Pricing</a></li>
+                    <li><a onclick="openPolicyModal('FAQ')">FAQ</a></li>
                 </ul>
             </div>
             <div class="footer-column">
                 <h4>Company</h4>
                 <ul>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Press Kit</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a onclick="openPolicyModal('About Us')">About Us</a></li>
+                    <li><a onclick="openPolicyModal('Careers')">Careers</a></li>
+                    <li><a onclick="openPolicyModal('Press Kit')">Press Kit</a></li>
+                    <li><a onclick="openPolicyModal('Contact')">Contact</a></li>
                 </ul>
             </div>
             <div class="footer-column">
                 <h4>Resources</h4>
                 <ul>
-                    <li><a href="#">Help Center</a></li>
-                    <li><a href="#">Safety Tips</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Community</a></li>
+                    <li><a onclick="openPolicyModal('Help Center')">Help Center</a></li>
+                    <li><a onclick="openPolicyModal('Safety Tips')">Safety Tips</a></li>
+                    <li><a onclick="openPolicyModal('Blog')">Blog</a></li>
+                    <li><a onclick="openPolicyModal('Community')">Community</a></li>
                 </ul>
             </div>
             <div class="footer-column">
                 <h4>Legal</h4>
                 <ul>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Data Protection</a></li>
-                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a onclick="openPolicyModal('Privacy Policy')">Privacy Policy</a></li>
+                    <li><a onclick="openPolicyModal('Terms of Service')">Terms of Service</a></li>
+                    <li><a onclick="openPolicyModal('Data Protection')">Data Protection</a></li>
+                    <li><a onclick="openPolicyModal('Cookie Policy')">Cookie Policy</a></li>
                 </ul>
             </div>
         </div>
@@ -1596,7 +1864,7 @@
         </div>
     </footer>
 
-    <div class="chatbot-button" onclick="toggleChat()">
+    <div class="chatbot-button" id="chatbotButton" onclick="toggleChat()">
         <i class="fa-solid fa-message"></i>
     </div>
 
@@ -1604,7 +1872,8 @@
         <div class="chatbot-header">
             <h3>SafeSaathi Assistant</h3>
             <div class="close-chat" onclick="toggleChat()">
-                <i class="fa-solid fa-xmark" style="font-size: 20px; color: #808080; cursor: pointer;"></i>
+                <i class="fa-solid fa-xmark"
+                    style="font-size: 20px; color: var(--color-secondary-text); cursor: pointer;"></i>
             </div>
         </div>
         <div class="chat-messages" id="chatMessages">
@@ -1613,8 +1882,8 @@
             </div>
             <div class="quick-actions">
                 <div class="quick-action" onclick="sendQuickMessage('How does SOS work?')">How does SOS work?</div>
-                <div class="quick-action" onclick="sendQuickMessage('Which devices are compatible?')">Device Compatibility</div>
-                <div class="quick-action" onclick="sendQuickMessage('I need a safety tip.')">I need a safety tip.</div>
+                 <div class="quick-action" onclick="sendQuickMessage('Is the app free?')">Is the app free?</div>
+                <div class="quick-action" onclick="sendQuickMessage('Emergency contacts')">Emergency contacts</div>
             </div>
         </div>
         <div class="chat-input-container">
@@ -1624,86 +1893,446 @@
         </div>
     </div>
 
+    <div class="modal-overlay" id="registrationModal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="modal-close" onclick="closeModal(event)"><i class="fa-solid fa-xmark"></i></span>
+
+            <div class="verification-container">
+                <div class="verification-content">
+                    <h2>Join the SafeSaathi Community</h2>
+                    <p>Register with your Aadhar to verify your identity and unlock safety features. Your
+                        information is encrypted and secure.</p>
+                    <div class="security-features">
+                        <div class="security-item">
+                            <div class="security-icon"><i class="fa-solid fa-lock"></i></div>
+                            <div>
+                                <strong>Bank-Grade Encryption</strong>
+                                <p style="color: var(--color-secondary-text); font-size: 14px; margin-top: 3px;">Your
+                                    data is protected with AES-256 encryption</p>
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-icon"><i class="fa-solid fa-circle-check"></i></div>
+                            <div>
+                                <strong>Aadhar Verified</strong>
+                                <p style="color: var(--color-secondary-text); font-size: 14px; margin-top: 3px;">UIDAI
+                                    compliant verification process</p>
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                            <div>
+                                <strong>Privacy Protected</strong>
+                                <p style="color: var(--color-secondary-text); font-size: 14px; margin-top: 3px;">We
+                                    never share your data with third parties</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="verification-form">
+                    <form id="aadharFormModal">
+                        <div class="form-group">
+                            <label for="modal-name">Full Name (as per Aadhar)</label>
+                            <input type="text" id="modal-name" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="modal-aadhar">Aadhar Number</label>
+                            <input type="text" id="modal-aadhar" placeholder="XXXX XXXX XXXX" maxlength="14" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="modal-phone">Mobile Number</label>
+                            <input type="tel" id="modal-phone" placeholder="XXXXX XXXXX" maxlength="10" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="modal-gender">Gender</label>
+                            <select id="modal-gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="female">Female</option>
+                                <option value="male">Male</option>
+                                <option value="other">Other</option>
+                                <option value="prefer-not">Prefer not to say</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="modal-age">Age Group</label>
+                            <select id="modal-age" required>
+                                <option value="">Select Age Group</option>
+                                <option value="18-25">18-25 years</option>
+                                <option value="26-40">26-40 years</option>
+                                <option value="41-60">41-60 years</option>
+                                <option value="60+">60+ years (Senior Citizen)</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="verify-button">Verify & Register</button>
+                        <div class="success-message" id="successModalMessage">
+                            <strong>✓ Registration Successful!</strong>
+                            <p style="margin-top: 10px; color: #b0b0b0;">Welcome to SafeSaathi. Download the app to
+                                activate your account.</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            </div>
+    </div>
+
+    <div class="modal-overlay" id="policyModal" onclick="closePolicyModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+             <span class="modal-close" onclick="closePolicyModal(event)"><i class="fa-solid fa-xmark"></i></span>
+             <div class="modal-header">
+                 <h2 id="policyModalTitle"></h2>
+             </div>
+             <div class="modal-body" id="policyModalContent">
+                 </div>
+        </div>
+    </div>
+
+
     <script>
-        // --- Form Submission Logic ---
-        // Format Aadhar input: Adds spaces after every 4 digits
-        document.getElementById('aadhar').addEventListener('input', function (e) {
-            let value = e.target.value.replace(/\s/g, '');
-            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
-            e.target.value = formattedValue;
-        });
+        // --- API Configuration ---
+        const apiKey = "AIzaSyCes36TbhbPrCMBdGZVG9vPKwUa1cX5p50"; // Your provided API key
+        const geminiApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
 
-        // Format phone input: Ensures only digits
-        document.getElementById('phone').addEventListener('input', function (e) {
-            e.target.value = e.target.value.replace(/\D/g, '');
-        });
+        // --- Mode Toggle Logic ---
+        function toggleMode() {
+            const body = document.body;
+            const toggleButton = document.getElementById('modeToggle');
 
-        // Form submission simulation (no real backend call)
-        document.getElementById('aadharForm').addEventListener('submit', function (e) {
-            e.preventDefault();
+            body.classList.toggle('light-mode');
 
-            // Simple client-side validation
-            const aadhar = document.getElementById('aadhar').value.replace(/\s/g, '');
-            const phone = document.getElementById('phone').value;
-
-            if (aadhar.length !== 12) {
-                alert('Please enter a valid 12-digit Aadhar number.');
-                return;
+            if (body.classList.contains('light-mode')) {
+                toggleButton.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'light');
+            } else {
+                toggleButton.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'dark');
             }
+        }
 
-            if (phone.length !== 10) {
-                alert('Please enter a valid 10-digit mobile number.');
-                return;
-            }
+        (function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const body = document.body;
+            const toggleButton = document.getElementById('modeToggle');
 
-            const button = document.querySelector('.verify-button');
-            button.textContent = 'Verifying...';
-            button.disabled = true;
-
-            // Simulate API verification delay
-            setTimeout(() => {
-                button.textContent = 'Verified ✓';
-                button.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)'; // Green gradient
-                document.getElementById('successMessage').style.display = 'block';
-
-                // Reset form and button state after a few seconds
-                setTimeout(() => {
-                    document.getElementById('aadharForm').reset();
-                    button.textContent = 'Verify & Register';
-                    button.disabled = false;
-                    button.style.background = 'var(--gradient-primary)';
-                    document.getElementById('successMessage').style.display = 'none';
-                }, 4000);
-            }, 2000); // 2-second delay
-        });
-
-        // --- Navigation and Animation Logic ---
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (savedTheme === 'light') {
+                body.classList.add('light-mode');
+                if (toggleButton) {
+                    toggleButton.classList.replace('fa-sun', 'fa-moon');
                 }
+            } else {
+                if (toggleButton) {
+                    toggleButton.classList.replace('fa-moon', 'fa-sun');
+                }
+            }
+        })();
+
+
+        // --- REGISTRATION MODAL LOGIC ---
+        function openModal() {
+            const modal = document.getElementById('registrationModal');
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(event) {
+            const modal = document.getElementById('registrationModal');
+            if (event.target === modal || event.target.closest('.modal-close')) {
+                modal.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // --- NEW POLICY/INFO MODAL LOGIC ---
+        function openPolicyModal(policyType) {
+            const modal = document.getElementById('policyModal');
+            const titleEl = document.getElementById('policyModalTitle');
+            const contentEl = document.getElementById('policyModalContent');
+
+            titleEl.textContent = policyType; // Set the title
+
+            // Generate placeholder content based on the type
+            let contentHTML = '';
+            switch (policyType) {
+                case 'Privacy Policy':
+                    contentHTML = `
+                        <h3>Information We Collect</h3>
+                        <p>When you register for SafeSaathi, we collect information necessary to provide our safety services, including your name, Aadhar number (for verification), mobile number, email address, gender, age group, and emergency contacts. When you use the SOS feature, we collect your real-time location data and may automatically record video/audio as configured by you.</p>
+                        <h3>How We Use Your Information</h3>
+                        <p>Your information is primarily used to operate the SafeSaathi service. This includes verifying your identity, allowing you to add trusted contacts, sending alerts with your location during emergencies, and facilitating communication with emergency responders. Location data and recordings are only accessed and shared during an active SOS alert as per your settings.</p>
+                        <h3>Data Security</h3>
+                        <p>We implement robust security measures, including bank-grade encryption (AES-256), to protect your personal information from unauthorized access, alteration, or disclosure. Your Aadhar data is used solely for verification and is handled according to UIDAI guidelines.</p>
+                        <h3>Data Sharing</h3>
+                        <p>We only share your information under specific circumstances: with your designated emergency contacts during an SOS alert, with emergency services (like police or ambulance) if integrated and activated, or if legally required by law enforcement. We **never** sell your personal data to third parties for marketing purposes.</p>
+                        <h3>Your Rights</h3>
+                        <p>You have the right to access, update, or delete your personal information within the SafeSaathi app. You can manage your emergency contacts and alert preferences at any time. For detailed requests or concerns, please contact our support team.</p>
+                        <p>Last Updated: October 24, 2025</p>
+                    `;
+                    break;
+                case 'Terms of Service':
+                    contentHTML = `
+                        <h3>Acceptance of Terms</h3>
+                        <p>By downloading, installing, or using the SafeSaathi application ("Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, do not use the Service. This Service is provided free of charge as a government-supported initiative.</p>
+                        <h3>Service Description</h3>
+                        <p>SafeSaathi provides an emergency SOS platform designed to alert designated contacts and potentially emergency services during critical situations. Features include location sharing, video/audio recording, siren activation, and community alerts.</p>
+                        <h3>User Responsibilities</h3>
+                        <p>You agree to provide accurate and current registration information, including Aadhar details for verification. You are responsible for maintaining the confidentiality of your account and for all activities that occur under your account. You agree to use the SOS feature responsibly and only in genuine emergencies. Misuse of the SOS feature may lead to account suspension and potential legal consequences.</p>
+                        <h3>Limitations of Liability</h3>
+                        <p>SafeSaathi relies on third-party services like GPS, mobile networks, and internet connectivity. We are not liable for failures or delays caused by factors beyond our reasonable control, including GPS inaccuracies, network outages, device malfunction, or incorrect contact information provided by you. The Service is provided "as is" without warranties of any kind.</p>
+                        <h3>Aadhar Verification</h3>
+                        <p>Aadhar verification is mandatory for using SafeSaathi to ensure user identity and enhance safety. Your Aadhar information is handled securely and used solely for verification purposes in compliance with applicable laws.</p>
+                        <h3>Termination</h3>
+                        <p>We reserve the right to suspend or terminate your access to the Service at any time for violations of these Terms or misuse of the Service.</p>
+                        <p>Last Updated: October 24, 2025</p>
+                    `;
+                    break;
+                case 'About Us':
+                     contentHTML = `
+                        <h3>Our Mission</h3>
+                        <p>SafeSaathi was founded with a simple yet powerful mission: to empower personal safety for everyone in India, especially women and senior citizens, through accessible and reliable technology. We believe that everyone has the right to feel secure, whether at home, commuting, or traveling.</p>
+                        <h3>Who We Are</h3>
+                        <p>We are a passionate team of developers, designers, and safety advocates based in India, dedicated to creating innovative solutions for real-world problems. We understand the unique safety challenges faced in our communities and are committed to making a positive impact.</p>
+                        <h3>Government Initiative</h3>
+                        <p>SafeSaathi is proud to be a public safety initiative supported by government bodies to ensure its accessibility to all citizens. Our commitment is to provide this essential service free of charge.</p>
+                        <h3>Our Commitment</h3>
+                        <p>We are committed to continuous improvement, user privacy, and building a trustworthy platform. SafeSaathi integrates robust security features, adheres to strict data protection standards, and collaborates with local authorities where possible to enhance response times. Your safety is our top priority.</p>
+                    `;
+                    break;
+                case 'Contact':
+                     contentHTML = `
+                        <h3>Get in Touch</h3>
+                        <p>We value your feedback and are here to help. Please reach out to us through the following channels:</p>
+                        <p><strong>Support Email:</strong> support@safesaathi.app</p>
+                        <p><strong>Helpline (Non-Emergency):</strong> +91 80 1234 5678 (Mon-Fri, 9 AM - 6 PM IST)</p>
+                        <p><strong>Office Address:</strong><br>
+                           SafeSaathi Initiative (Govt. Supported)<br>
+                           123 Public Safety Building, Amaravati,<br>
+                           Andhra Pradesh, India - 522002</p>
+                        <p><strong>For Emergencies:</strong> Please use the SOS button in the app or call 112 directly.</p>
+                    `;
+                    break;
+                 case 'Pricing': // Updated Pricing content
+                     contentHTML = `
+                        <h3>Our Commitment to Free Access</h3>
+                        <p>SafeSaathi is provided completely **free of charge** to all users across India.</p>
+                        <p>This initiative is made possible through the support and collaboration of government bodies committed to enhancing public safety, particularly for women and senior citizens.</p>
+                        <p>There are no hidden costs, subscriptions, or premium features requiring payment. Our goal is to ensure that essential safety tools are accessible to everyone who needs them.</p>
+                        <p>Focus on your safety, knowing that SafeSaathi is here to help, supported by a commitment to public well-being.</p>
+                    `;
+                    break;
+                 case 'FAQ': // Updated FAQ Content
+                     contentHTML = `
+                        <h3>Frequently Asked Questions</h3>
+
+                        <h3>Why is SafeSaathi free?</h3>
+                        <p>SafeSaathi is a public safety initiative made possible with the support and collaboration of government bodies. Our mission is to make essential safety tools accessible to everyone in India, especially vulnerable groups like women and senior citizens, without any cost barrier.</p>
+
+                        <h3>Is my data safe with SafeSaathi?</h3>
+                        <p>Yes, protecting your privacy and data is our top priority. We use bank-grade encryption (AES-256) for your personal information. Aadhar details are used strictly for verification as per UIDAI guidelines. Location data and recordings are only shared during an active SOS alert according to your pre-set preferences with your emergency contacts or emergency services. We never sell your data.</p>
+
+                        <h3>How does the Aadhar verification work?</h3>
+                        <p>We use a secure, UIDAI-compliant process to verify your identity using your Aadhar number. This helps ensure that users on the platform are genuine, which enhances the overall safety and reliability of the community alert features and emergency responses.</p>
+
+                        <h3>What happens when I press the SOS button?</h3>
+                        <p>Pressing and holding the SOS button triggers an immediate alert. Your pre-selected emergency contacts are notified via SMS and/or in-app notification, including your real-time location. Depending on your settings, the app may also start auto-recording audio/video, activate a loud siren, and share your details with integrated emergency services like the local police.</p>
+
+                        <h3>Do I need an internet connection for it to work?</h3>
+                        <p>While an internet connection enables features like live location tracking updates and video uploads, the core SOS alert function can work without internet by sending essential details (like your last known location and alert status) via SMS to your emergency contacts.</p>
+                    `;
+                     break;
+                default:
+                    contentHTML = `<p>Detailed information about ${policyType} will be available here soon. Please check back later or contact support for immediate inquiries.</p>`;
+            }
+
+            contentEl.innerHTML = contentHTML; // Set the content
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePolicyModal(event) {
+            const modal = document.getElementById('policyModal');
+            if (event.target === modal || event.target.closest('.modal-close')) {
+                modal.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        }
+
+
+        // --- Form Submission Logic (Registration Modal) ---
+        function setupFormLogic(formId, aadharId, phoneId, successMsgId) {
+            const aadharInput = document.getElementById(aadharId);
+            const phoneInput = document.getElementById(phoneId);
+            const form = document.getElementById(formId);
+
+            if (aadharInput) {
+                aadharInput.addEventListener('input', function (e) {
+                    let value = e.target.value.replace(/\s/g, '');
+                    let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+                    e.target.value = formattedValue;
+                });
+            }
+
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function (e) {
+                    e.target.value = e.target.value.replace(/\D/g, '');
+                });
+            }
+
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const aadhar = document.getElementById(aadharId).value.replace(/\s/g, '');
+                    const phone = document.getElementById(phoneId).value;
+
+                    if (aadhar.length !== 12) {
+                        alert('Please enter a valid 12-digit Aadhar number.');
+                        return;
+                    }
+
+                    if (phone.length !== 10) {
+                        alert('Please enter a valid 10-digit mobile number.');
+                        return;
+                    }
+
+                    const button = form.querySelector('.verify-button');
+                    button.textContent = 'Verifying...';
+                    button.disabled = true;
+
+                    setTimeout(() => {
+                        button.textContent = 'Verified ✓';
+                        button.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+                        document.getElementById(successMsgId).style.display = 'block';
+
+                        setTimeout(() => {
+                            form.reset();
+                            button.textContent = 'Verify & Register';
+                            button.disabled = false;
+                            button.style.background = 'var(--gradient-primary)';
+                            document.getElementById(successMsgId).style.display = 'none';
+                            // Close the registration modal after success
+                            const regModal = document.getElementById('registrationModal');
+                            regModal.classList.remove('open');
+                            document.body.style.overflow = '';
+                        }, 4000);
+                    }, 2000);
+                });
+            }
+        }
+
+        // --- Event Listeners ---
+        document.addEventListener('DOMContentLoaded', () => {
+            setupFormLogic('aadharFormModal', 'modal-aadhar', 'modal-phone', 'successModalMessage');
+
+            const toggleReviewsButton = document.getElementById('toggleReviewsBtn');
+            if (toggleReviewsButton) {
+                toggleReviewsButton.addEventListener('click', function () {
+                    const hiddenReviews = document.querySelectorAll('.hidden-review');
+                    const isShowingMore = this.textContent.includes('View More');
+
+                    if (isShowingMore) {
+                        hiddenReviews.forEach(review => {
+                            review.style.display = 'block';
+                        });
+                        this.textContent = 'View Less Reviews';
+                    } else {
+                        hiddenReviews.forEach(review => {
+                            review.style.display = 'none';
+                        });
+                        this.textContent = 'View More Reviews';
+                    }
+                });
+            }
+
+            // Smooth scrolling for internal page links only
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    // Check if it's NOT a modal trigger AND NOT a policy trigger
+                    const isModalTrigger = this.hasAttribute('onclick') && (this.getAttribute('onclick').includes('openModal') || this.getAttribute('onclick').includes('openPolicyModal'));
+                    if (!isModalTrigger) {
+                            e.preventDefault();
+                            const target = document.querySelector(this.getAttribute('href'));
+                            if (target) {
+                                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                    }
+                });
+            });
+
+
+            // --- MODIFIED: Intersection Observer for scroll animations ---
+            const observerOptions = {
+                threshold: 0.1, // Start animation when 10% is visible
+                rootMargin: '0px 0px -50px 0px' // Start a little before it hits the edge
+            };
+
+            const animationObserver = new IntersectionObserver(function (entries, observer) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target;
+
+                        // Handle simple .fade-in elements
+                        if (target.classList.contains('fade-in')) {
+                            target.classList.add('visible');
+                        }
+
+                        // Handle .stagger-grid elements
+                        if (target.classList.contains('stagger-grid')) {
+                            const children = target.querySelectorAll('.stagger-child');
+                            children.forEach((child, index) => {
+                                // Apply delay using the CSS variable
+                                child.style.setProperty('--stagger-delay', `${index * 100}ms`);
+                            });
+                            // Add 'visible' to the grid, which triggers the CSS for children
+                            target.classList.add('visible');
+                        }
+                        
+                        // Handle Stat Counter
+                        if (target.classList.contains('stats')) {
+                            startStatCounters();
+                        }
+
+                        // Stop observing once animated
+                        observer.unobserve(target);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all elements that need animation
+            // We observe .fade-in (for CTA), .stagger-grid (for cards), and .stats (for counter)
+            document.querySelectorAll('.fade-in, .stagger-grid, .stats').forEach(el => {
+                animationObserver.observe(el);
             });
         });
 
-        // Intersection Observer for scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
+        // --- NEW: Stat Counter Function ---
+        let countersStarted = false; // Prevent multiple triggers
+        function startStatCounters() {
+            if (countersStarted) return;
+            countersStarted = true;
+            
+            const stats = document.querySelectorAll('.stat-item h3[data-target]');
+            stats.forEach(stat => {
+                const target = +stat.dataset.target;
+                const duration = 2000; // 2 seconds
+                const prefix = stat.dataset.prefix || '';
+                const suffix = stat.dataset.suffix || '';
+                
+                let start = 0;
+                // Calculate increment
+                let increment = target / (duration / 16); // ~60fps
+                if (increment < 1) increment = 1; // Ensure it at least increments by 1 for small numbers
 
-        const observer = new IntersectionObserver(function (entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+                const counter = () => {
+                    start += increment;
+                    if (start < target) {
+                        stat.innerHTML = `${prefix}${Math.ceil(start).toLocaleString()}${suffix}`;
+                        requestAnimationFrame(counter);
+                    } else {
+                        // Use toLocaleString for numbers like 50,000
+                        stat.innerHTML = `${prefix}${target.toLocaleString()}${suffix}`;
+                    }
+                };
+                counter();
             });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        }
 
         // Navigation scroll effect
         window.addEventListener('scroll', function () {
@@ -1715,14 +2344,24 @@
             }
         });
 
-        // --- Chatbot Functionality ---
+
+        // --- Chatbot Functionality (Unchanged) ---
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
 
         function toggleChat() {
             const chatbot = document.getElementById('chatbot');
-            if (chatbot.style.display === 'none' || chatbot.style.display === '') {
-                chatbot.style.display = 'flex';
+            const button = document.getElementById('chatbotButton');
+
+            const isOpen = chatbot.classList.toggle('open-chat');
+
+            if (isOpen) {
+                button.classList.add('hidden');
             } else {
-                chatbot.style.display = 'none';
+                setTimeout(() => {
+                    button.classList.remove('hidden');
+                }, 400);
             }
         }
 
@@ -1730,55 +2369,117 @@
             const messagesContainer = document.getElementById('chatMessages');
             const messageElement = document.createElement('div');
             messageElement.className = `message ${sender}-message`;
-            messageElement.textContent = text;
+
+            const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            messageElement.innerHTML = formattedText;
+
             messagesContainer.appendChild(messageElement);
-            // Scroll to the latest message
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
             return messageElement;
         }
 
-        function getBotResponse(message) {
-            const lowerMsg = message.toLowerCase();
-            if (lowerMsg.includes('sos') || lowerMsg.includes('emergency')) {
-                return "The **Instant Emergency Alert (SOS)** works with one tap. It immediately shares your live location, starts auto-recording, and alerts your 5 trusted contacts and local authorities simultaneously. Your safety is our priority!";
-            } else if (lowerMsg.includes('price') || lowerMsg.includes('cost') || lowerMsg.includes('plan')) {
-                return "SafeSaathi offers a **30-day free trial**! Our premium plan is ₹299/month, offering full access to all features including 24/7 security monitoring. Check the 'Pricing' link in the footer for details.";
-            } else if (lowerMsg.includes('device') || lowerMsg.includes('compatible') || lowerMsg.includes('watch')) {
-                return "SafeSaathi is compatible with **all Android (5.0+) and iOS (12.0+) phones**. We also offer seamless integration with most major **smartwatch brands** for discreet SOS activation.";
-            } else if (lowerMsg.includes('safety tip') || lowerMsg.includes('advice')) {
-                const tips = [
-                    "Safety Tip: Always let a trusted contact know your travel route and expected arrival time, even for short trips.",
-                    "Safety Tip: Make sure your emergency contacts list in the app is up-to-date and includes multiple people.",
-                    "Safety Tip: Regularly check your phone's battery life, especially when heading out alone at night."
-                ];
-                return tips[Math.floor(Math.random() * tips.length)];
-            } else if (lowerMsg.includes('thank you') || lowerMsg.includes('thanks')) {
-                return "You're welcome! Stay safe and secure with SafeSaathi. If you have more questions, just ask!";
-            } else {
-                return "I'm the SafeSaathi Assistant! I can answer questions about the **SOS feature**, **pricing plans**, **device compatibility**, and **general safety tips**. How can I help?";
-            }
-        }
-
         async function sendMessage() {
             const input = document.getElementById('chatInput');
-            const userMessage = input.value.trim();
+            const message = input.value.trim();
 
-            if (userMessage === '') return;
+            if (message === '') return;
 
-            // 1. Add user message
-            addMessage('user', userMessage);
+            addMessage('user', message);
             input.value = '';
 
-            // 2. Simulate bot typing
-            const typingMessage = addMessage('bot', 'SafeSaathi Assistant is typing...');
-            
-            // 3. Get response with a small delay
-            const botResponseText = getBotResponse(userMessage);
+            await callGeminiChatbot(message);
+        }
 
-            await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
+        async function callGeminiChatbot(message, maxRetries = 3) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const typingMessage = addMessage('bot', 'Typing...');
 
-            // 4. Update the typing message with the actual response
-            typingMessage.textContent = botResponseText;
+            // Updated system prompt reflecting free, govt-supported model
+            const systemPrompt = `You are the 'SafeSaathi Assistant', a friendly and professional chatbot for the SafeSaathi app.
+SafeSaathi is a **free public safety initiative** supported by the government.
+Your goal is to answer user questions about the app's features (like SOS, location sharing, verification), how to use it, and general safety tips.
+**Do not mention any paid plans, subscriptions, or free trials.** Emphasize that the app is completely free due to government support.
+Keep your answers concise, helpful, and empathetic.
+Do not provide medical or legal advice. If a user seems to be in a real, immediate emergency, you MUST instruct them to press the SOS button, call emergency services (like 112 or 1091 in India), and contact local authorities immediately.
+Do not refer to yourself as an AI or large language model; you are the 'SafeSaathi Assistant'.`;
+
+            const payload = {
+                contents: [{
+                    role: "user",
+                    parts: [{ text: message }]
+                }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                },
+                 safetySettings: [
+                     { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+                     { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+                     { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+                     { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+                 ]
+            };
+
+            let attempt = 0;
+            while (attempt < maxRetries) {
+                try {
+                    const response = await fetch(geminiApiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.status === 429) {
+                       throw new Error('Rate limit exceeded. Please wait and try again.');
+                    }
+
+                    if (!response.ok) {
+                       const errorBody = await response.json();
+                       console.error("API Error Body:", errorBody);
+                       throw new Error(`API error: ${response.status} ${response.statusText}. ${errorBody?.error?.message || ''}`);
+                    }
+
+
+                    const result = await response.json();
+
+                    if(result.promptFeedback && result.promptFeedback.blockReason){
+                        console.warn("Request blocked by safety filter:", result.promptFeedback.blockReason);
+                        throw new Error('My response was blocked due to safety settings. Please rephrase your message.');
+                    }
+
+                    if (!result.candidates || result.candidates.length === 0) {
+                        throw new Error('No response candidate received from API.');
+                    }
+
+                    const candidate = result.candidates[0];
+
+                    if (candidate.finishReason === "SAFETY") {
+                         console.warn("Response blocked by safety filter for candidate.");
+                         throw new Error('My response was blocked due to safety settings. Please rephrase your message.');
+                    }
+
+                    if (candidate.finishReason && candidate.finishReason !== "STOP" && candidate.finishReason !== "MAX_TOKENS") {
+                         console.warn("Response generation stopped unexpectedly:", candidate.finishReason);
+                    }
+
+
+                    if (candidate.content && candidate.content.parts && candidate.content.parts[0] && candidate.content.parts[0].text) {
+                        const botResponse = candidate.content.parts[0].text;
+                        typingMessage.innerHTML = botResponse.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                        return; // Success
+                    } else {
+                         throw new Error('Invalid response structure or empty content received from API.');
+                    }
+
+                } catch (error) {
+                    console.error(`Gemini Chatbot Error on attempt ${attempt + 1}: ${error}`);
+                    attempt++;
+                    if (attempt >= maxRetries) {
+                        typingMessage.textContent = `Sorry, I've encountered an error: ${error.message}. Please try again later.`;
+                    } else {
+                        await sleep(1000 * Math.pow(2, attempt));
+                    }
+                }
+            }
         }
 
         function sendQuickMessage(message) {
@@ -1791,6 +2492,7 @@
                 sendMessage();
             }
         }
+
     </script>
 </body>
 
